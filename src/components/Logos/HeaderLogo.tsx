@@ -1,4 +1,4 @@
-import header_logo from "../../public/horizontal_logo.svg";
+import header_logo from "public/horizontal_logo.svg";
 import Image from "next/image";
 
 export default function HeaderLogo() {

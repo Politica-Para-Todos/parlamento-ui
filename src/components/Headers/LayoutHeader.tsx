@@ -1,7 +1,7 @@
 import { Col, Layout, Menu, Row } from "antd";
 import Link from "next/link";
 import { memo } from "react";
-import HeaderLogo from "../Logos/HeaderLogo";
+import HeaderLogo from "components/Logos/HeaderLogo";
 
 const LayoutHeader = () => {
   return (
@@ -18,13 +18,7 @@ const LayoutHeader = () => {
           </Link>
 
           <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none">
-            <Menu mode="horizontal">
-              <Menu.Item key={1}>
-                <Link href="/" onClick={() => {}}>
-                  Home
-                </Link>
-              </Menu.Item>
-            </Menu>
+
           </nav>
         </Col>
       </Row>
