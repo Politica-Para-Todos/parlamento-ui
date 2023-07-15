@@ -1,24 +1,23 @@
 "use client";
-import { Layout } from "antd";
 import LayoutHeader from "@/components/Headers/LayoutHeader";
 import { createContext } from "react";
 
 const Context = createContext(LayoutHeader);
 
+async function getInitiatives(params: any) {
+  return await fetch('https://portuguese-politics.herokuapp.com/parliament/initiatives?legislature=XV&event_phase=Vota%C3%A7%C3%A3o%20na%20generalidade&limit=20&offset=0')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('API request has failed');
+    }
+    return response.json();
+  })
+}
+
 // eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
-  const fetching = async () => {
-    const response = await fetch(
-      "https://portuguese-politics.herokuapp.com/parliament/initiatives?legislature=XV&event_phase=Vota%C3%A7%C3%A3o%20na%20generalidade&limit=20&offset=0"
-    );
-    if (response.status !== 200) {
-      throw new Error("API request has failed");
-    }
-    const parsed = await response.json();
-    return parsed["initiativas"] as Initiatives[];
-  };
-
-  const initiatives: Initiatives[] = await fetching();
+  const fetchedData = await getInitiatives(null);
+  const initiatives = fetchedData['initiativas'] as Initiatives[];
 
   return (
     <div>
