@@ -1,6 +1,6 @@
 'use client';
 import { Table } from "antd";
-import { Initiative } from "../Initiatives/FetchInitiatives";
+import { Initiative } from "../Initiatives/dto";
 
 interface InitiativeTableProps {
   data: Initiative[]
