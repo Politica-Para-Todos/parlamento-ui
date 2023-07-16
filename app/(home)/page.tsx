@@ -1,6 +1,5 @@
 import LayoutHeader from "@/components/Headers/LayoutHeader";
 import Link from "next/link";
-import Initiatives from "../iniciativas/page";
 
 export default function Home() {
   return (
