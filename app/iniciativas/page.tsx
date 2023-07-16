@@ -1,16 +1,13 @@
 import LayoutHeader from "@/components/Headers/LayoutHeader";
-import Link from "next/link";
-import Initiatives from "../iniciativas/page";
+import FetchInitiatives from "@/components/Initiatives/FetchInitiatives";
 
-export default function Home() {
+export default function Initiatives() {
   return (
     <div>
     <LayoutHeader />
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        <Link href='/iniciativas'>
-          <h2>Iniciativas</h2>
-        </Link>
+        <FetchInitiatives />
       </div>
     </main>
   </div>

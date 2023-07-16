@@ -1,3 +1,4 @@
+'use client';
 import { Col, Layout, Menu, Row } from "antd";
 import Link from "next/link";
 import { memo } from "react";
@@ -16,16 +17,7 @@ const LayoutHeader = () => {
           <Link href="/">
             <HeaderLogo />
           </Link>
-
-          <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none">
-            <Menu mode="horizontal">
-              <Menu.Item key={1}>
-                <Link href="/" onClick={() => {}}>
-                  Home
-                </Link>
-              </Menu.Item>
-            </Menu>
-          </nav>
+          <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none"></nav>
         </Col>
       </Row>
     </Layout.Header>
