@@ -1,10 +1,9 @@
 'use client';
-import { Col, Layout, Menu, Row } from "antd";
+import { Col, Layout, Row } from "antd";
 import Link from "next/link";
-import { memo } from "react";
-import HeaderLogo from "components/Logos/HeaderLogo";
+import HeaderLogo from "../Logos/HeaderLogo";
 
-const LayoutHeader = () => {
+export default function LayoutHeader() {
   return (
     <Layout.Header className="flex w-full p-0 bg-darkGrey min-h-[80px]">
       <Row
@@ -24,4 +23,4 @@ const LayoutHeader = () => {
   );
 };
 
-export default memo(LayoutHeader);
+// export default LayoutHeader;
