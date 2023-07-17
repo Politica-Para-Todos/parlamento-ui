@@ -1,12 +1,14 @@
 'use client';
 import Row from "./Row"
 
-export default function Hemicycle() {
+interface HemicycleProps {
+  width: number
+}
+
+export default function Hemicycle({width}: HemicycleProps) {
   const seats = 230;
   const rows = 6;
-  const canvasWidth = 800
-  const width = canvasWidth;
-  const height = canvasWidth * 0.60;
+  const height = width * 0.60;
   const circle = Math.min(width, height * 1.5);
   const radius0 = circle * 0.22;
   const radius1 = circle * 0.58;
@@ -20,7 +22,7 @@ export default function Hemicycle() {
   let dots_total = 6;
 
   return (
-    <svg height={height} width={width} style={{'backgroundColor': 'wheat'}}>
+    <svg height={height} width={width}>
       <g transform={`translate(${positionX},${positionY})`}>
         {rowsRadius.map((rad, index) => {
           const rowSeats = index === rowsRadius.length - 1 ? seats - dots_total : Math.round(pi * rad / total_l * seats);
@@ -32,7 +34,7 @@ export default function Hemicycle() {
               seats={rowSeats}
               pi={pi}
               rad={rad}
-              index={index}
+              rowIndex={index}
               radius={{r0: radius0, r1: radius1}}
               dot_l={total_l / seats}
               totalRows={rows}

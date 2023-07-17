@@ -8,7 +8,7 @@ export default function Home() {
       <LayoutHeader />
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <div>
-          <Hemicycle />
+          <Hemicycle width={800} />
         </div>
         <div>
           <Link href='/iniciativas'>

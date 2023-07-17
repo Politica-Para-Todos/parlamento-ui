@@ -13,7 +13,7 @@ export default function LayoutHeader() {
         typeof="flex"
       >
         <Col className="flex items-center" span={24} lg={24}>
-          <Link href="/">
+          <Link href="https://politicaparatodos.pt/">
             <HeaderLogo />
           </Link>
           <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none"></nav>
