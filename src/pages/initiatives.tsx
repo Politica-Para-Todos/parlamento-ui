@@ -1,24 +1,33 @@
 import { Layout } from "antd";
 import LayoutHeader from "components/Headers/LayoutHeader";
 
-export default function Home() {
-  return (
-    <div>
-      <LayoutHeader />
-    </div>
-  );
-}
-
-export async function getServerSideProps() {
-  const response = await fetch(
-    "https://portuguese-politics.herokuapp.com/parliament/initiatives?legislature=XV&event_phase=Vota%C3%A7%C3%A3o%20na%20generalidade&limit=20&offset=0"
-  );
-  if (response.status !== 200) {
-    throw new Error("API request has failed");
+async function getInitiatives() {
+    const response = await fetch(
+        "https://portuguese-politics.herokuapp.com/parliament/initiatives?legislature=XV&event_phase=Vota%C3%A7%C3%A3o%20na%20generalidade&limit=20&offset=0"
+      );
+      if (response.status !== 200) {
+        throw new Error("API request has failed");
+      }
+      const parsed = await response.json();
+      return parsed["initiativas"] as Initiatives[];
   }
-  const parsed = await response.json();
-  const initiatives = parsed["initiativas"];
-  return { props: { initiatives } };
+
+export default async function Home() {
+    const artistData = getInitiatives()
+    const [initiatives] = await Promise.all([artistData])
+    
+      return (
+        <div>
+          <LayoutHeader />
+          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            <div>
+              {initiatives.map((item) => (
+                <li key={item.iniciativa_id}>{item.iniciativa_titulo}</li>
+              ))}
+            </div>
+          </main>
+        </div>
+      );
 }
 
 interface Initiatives {
