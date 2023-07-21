@@ -1,9 +1,9 @@
-import { Col, Layout, Menu, Row } from "antd";
+'use client';
+import { Col, Layout, Row } from "antd";
 import Link from "next/link";
-import { memo } from "react";
-import HeaderLogo from "components/Logos/HeaderLogo";
+import HeaderLogo from "../Logos/HeaderLogo";
 
-const LayoutHeader = () => {
+export default function LayoutHeader() {
   return (
     <Layout.Header className="flex w-full p-0 bg-darkGrey min-h-[80px]">
       <Row
@@ -13,17 +13,14 @@ const LayoutHeader = () => {
         typeof="flex"
       >
         <Col className="flex items-center" span={24} lg={24}>
-          <Link href="/">
+          <Link href="https://politicaparatodos.pt/">
             <HeaderLogo />
           </Link>
-
-          <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none">
-
-          </nav>
+          <nav className="hidden lg:flex flex-grow ml-8 bg-darkGrey border-none"></nav>
         </Col>
       </Row>
     </Layout.Header>
   );
 };
 
-export default memo(LayoutHeader);
+// export default LayoutHeader;
