@@ -2,6 +2,8 @@
 
 import { Popover } from "antd";
 import Link from "next/link";
+import Circle from "./Circle";
+import { Deputy } from "../../deputado/dto";
 
 interface SeatProps{
   range: number,
@@ -10,42 +12,41 @@ interface SeatProps{
     r1: number
   }
   totalRows: number,
-  dot_l: number
-  rad: number
-  pi: number
-  id: string
+  dot_l: number,
+  rad: number,
+  pi: number,
+  id: string,
+  deputy: Deputy
 }
 
-export default function Seat({range, radius, totalRows, dot_l, rad, pi, id}: SeatProps) {
-  const { r0, r1 } = radius;
+export default function Seat({range, radius, totalRows, dot_l, rad, pi, id, deputy}: SeatProps) {
   
-  const arci = (radius: number) => {
-    return (t: number) => {
-      const p = t * pi - Math.PI * 0.5 - pi * 0.5;
-      return [Math.cos(p) * radius, Math.sin(p) * radius];
-    }
-  }
-  const test = arci(rad);
-
-  const content = (
-    <div>
-      <p>Partido</p>
-      <p>more info...</p>
-    </div>
-  );
-  const firstLastName = 'andre-ventura';
+  const deputyFirstLastName = deputy ? deputy.firstLastName : 'no-deputy';
 
   return (
-    <Link href={`/deputado/${firstLastName}`}>
-      <Popover content={content} title="Nome Deputado" trigger="hover">
-        <circle
-          transform={`translate(${test(range)})`}
-          r={Math.min(dot_l * 0.5 - 1, (r1 - r0) / totalRows * 0.5 - 1)}
-          className='dot'
+    <Popover content={popOverContent(deputy)} title={deputy ? deputy.firstLastName : 'Lugar Vago'} trigger="hover">
+      <Link href={`/deputado/${deputyFirstLastName}`}>
+        <Circle
+          key={id}
           id={id}
-          style={{'fill': '#e5e7eb'}}
-        ></circle>
-      </Popover>
-    </Link>
+          totalRows={totalRows}
+          pi={pi}
+          range={range}
+          rad={rad}
+          radius={radius}
+          dot_l={dot_l}
+          deputy={deputy}
+        />
+      </Link>
+    </Popover>
   )
+}
+
+const popOverContent = (deputy: Deputy): JSX.Element => {
+  return (
+    <div>
+      <p>{deputy ? deputy.parliamentaryGroup.acronym : 'Sem partido'}</p>
+      <p>{deputy ? deputy.situation[0].description : 'Sem deputado'}</p>
+    </div>
+  );
 }
