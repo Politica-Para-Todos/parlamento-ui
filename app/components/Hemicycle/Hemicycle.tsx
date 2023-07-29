@@ -1,27 +1,28 @@
 'use client';
+
 import { Deputy } from "../../deputado/dto";
-import { randomDeputy } from "../../hemicycle/test";
 import Row from "../Row/Row"
 
 interface HemicycleProps {
-  width: number,
   deputies: Deputy[]
+  width?: number,
+  seats: number
+  rows: number
 }
 
-export default function Hemicycle({width, deputies}: HemicycleProps) {
-  const SEATS = 230;
-  const ROWS = 6;
-  const PI = Math.PI * 1;
-  
+export default function Hemicycle({width = 600, deputies, seats, rows}: HemicycleProps) {
+  const pi = Math.PI * 1;
   const height = width * 0.60;
   const circle = Math.min(width, height * 1.5);
   const radius0 = circle * 0.22;
   const radius1 = circle * 0.58;
   const positionX = width * 0.5;
   const positionY = circle * 0.55;
-  const rowsIndex = Array.from(Array(ROWS).keys());
-  const rowsRadius = rowsIndex.map(row => radius0 + row * ((radius1 - radius0) / ROWS));
-  const total_l = rowsRadius.map(row => PI * row).reduce((a, c) => a + c, 0);
+  const rowsIndex = Array.from(Array(rows).keys());
+  const rowsRadius = rowsIndex.map(row => radius0 + row * ((radius1 - radius0) / rows));
+  const total_l = rowsRadius
+    .map(rowRadius => pi * rowRadius)
+    .reduce((previous, current) => previous + current, 0);
   
   let dots_total = 6;
 
@@ -31,19 +32,18 @@ export default function Hemicycle({width, deputies}: HemicycleProps) {
     <svg height={height} width={width}>
       <g transform={`translate(${positionX},${positionY})`}>
         {rowsRadius.map((rad, index) => {
-          const rowSeats = index === rowsRadius.length - 1 ? SEATS - dots_total : Math.round(PI * rad / total_l * SEATS);
+          const rowSeats = index === rowsRadius.length - 1 ? seats - dots_total : Math.round(pi * rad / total_l * seats);
           dots_total += rowSeats;
 
           return (
             <Row
               key={index}
               seats={rowSeats}
-              pi={PI}
               rad={rad}
               rowIndex={index}
               radius={{r0: radius0, r1: radius1}}
-              dot_l={total_l / SEATS}
-              totalRows={ROWS}
+              dot_l={total_l / seats}
+              hemicycleRows={rows}
               deputies={mutableDeputies}
             ></Row>
           )})}
@@ -128,32 +128,32 @@ export default function Hemicycle({width, deputies}: HemicycleProps) {
 //   return rowDeputies;
 // }
 
-const selectRowDeputies = (partyDeputies: Deputy[], remainingDeputies: Deputy[], remainingSeats: number): Deputy[] => {
-  const totalPartyDeputies = partyDeputies.length;
+// const selectRowDeputies = (partyDeputies: Deputy[], remainingDeputies: Deputy[], remainingSeats: number): Deputy[] => {
+//   const totalPartyDeputies = partyDeputies.length;
 
-  if (totalPartyDeputies === 0) {
-    return [];
-  }
-  else if (totalPartyDeputies === 1 && remainingSeats >= totalPartyDeputies) {
-    return partyDeputies;
-  }
-  else if (totalPartyDeputies === 2 && remainingSeats >= totalPartyDeputies) {
-    const deputy1 = randomDeputy(partyDeputies);
-    const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
+//   if (totalPartyDeputies === 0) {
+//     return [];
+//   }
+//   else if (totalPartyDeputies === 1 && remainingSeats >= totalPartyDeputies) {
+//     return partyDeputies;
+//   }
+//   else if (totalPartyDeputies === 2 && remainingSeats >= totalPartyDeputies) {
+//     const deputy1 = randomDeputy(partyDeputies);
+//     const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
 
-    return [deputy1, deputy2];
-  }
-  else if (totalPartyDeputies > 2 && remainingSeats >= totalPartyDeputies) {
-    let seats = remainingSeats;
+//     return [deputy1, deputy2];
+//   }
+//   else if (totalPartyDeputies > 2 && remainingSeats >= totalPartyDeputies) {
+//     let seats = remainingSeats;
 
-    const deputy1 = randomDeputy(partyDeputies);
-    const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
+//     const deputy1 = randomDeputy(partyDeputies);
+//     const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
 
-    seats -= 2;
+//     seats -= 2;
 
-    // const passRows = ()
-  }
-  else {
-    throw new Error();
-  }
-}
+//     // const passRows = ()
+//   }
+//   else {
+//     throw new Error();
+//   }
+// }

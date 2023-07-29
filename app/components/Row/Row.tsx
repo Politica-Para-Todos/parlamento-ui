@@ -10,32 +10,31 @@ interface RowProps{
     r0: number,
     r1: number
   },
-  totalRows: number,
-  pi: number,
+  hemicycleRows: number,
   dot_l: number,
   deputies: Deputy[]
 }
 
-export default function Row({rad, radius, totalRows, pi, seats, dot_l, rowIndex, deputies}: RowProps) {
-  const range = (from: number, to: number, step: number): number[] =>
-  [...Array(Math.floor((to - from) / step) + 1)].map((_, i) => from + i * step);
+export default function Row({seats, rowIndex, radius, hemicycleRows, rad, dot_l, deputies}: RowProps) {
   const seatsRange = range(0, 1.000001, 1 / seats);
   
   return (
     <g className='row'>
-      {seatsRange.map((range, index) => (
+      {seatsRange.map((seatRange, index) => (
         <Seat
-          key={range}
-          range={range}
-          radius={radius}
-          totalRows={totalRows}
-          rad={rad}
-          pi={pi}
-          dot_l={dot_l}
+          key={seatRange}
           id={`${rowIndex}-${index}`}
+          range={seatRange}
+          radius={radius}
+          hemicycleRows={hemicycleRows}
+          rad={rad}
+          dot_l={dot_l}
           deputy={deputies[index]}
         ></Seat>
       ))}
     </g>
   )
 }
+
+const range = (from: number, to: number, step: number): number[] =>
+  [...Array(Math.floor((to - from) / step) + 1)].map((_, i) => from + i * step);
