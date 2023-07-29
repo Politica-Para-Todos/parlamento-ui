@@ -1,6 +1,6 @@
 'use client';
 import { Deputy } from "../../deputado/dto";
-import Seat from "./Seat"
+import Seat from "../Seat/Seat"
 
 interface RowProps{
   seats: number,

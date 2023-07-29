@@ -1,7 +1,7 @@
 'use client';
 import { Deputy } from "../../deputado/dto";
-import { PartyAcronym } from "../../partido/dto";
-import Row from "./Row"
+import { randomDeputy } from "../../hemicycle/test";
+import Row from "../Row/Row"
 
 interface HemicycleProps {
   width: number,
@@ -9,39 +9,42 @@ interface HemicycleProps {
 }
 
 export default function Hemicycle({width, deputies}: HemicycleProps) {
-  const seats = 230;
-  const rows = 6;
+  const SEATS = 230;
+  const ROWS = 6;
+  const PI = Math.PI * 1;
+  
   const height = width * 0.60;
   const circle = Math.min(width, height * 1.5);
   const radius0 = circle * 0.22;
   const radius1 = circle * 0.58;
   const positionX = width * 0.5;
   const positionY = circle * 0.55;
-  const rowsRange = Array.from(Array(rows).keys());
-  const rowsRadius = rowsRange.map(row => radius0 + row * ((radius1 - radius0) / rows));
-  const pi = Math.PI * 1;
-  const total_l = rowsRadius.map(row => pi * row).reduce((a, c) => a + c, 0);
+  const rowsIndex = Array.from(Array(ROWS).keys());
+  const rowsRadius = rowsIndex.map(row => radius0 + row * ((radius1 - radius0) / ROWS));
+  const total_l = rowsRadius.map(row => PI * row).reduce((a, c) => a + c, 0);
   
   let dots_total = 6;
+
+  let mutableDeputies = [...deputies];
 
   return (
     <svg height={height} width={width}>
       <g transform={`translate(${positionX},${positionY})`}>
         {rowsRadius.map((rad, index) => {
-          const rowSeats = index === rowsRadius.length - 1 ? seats - dots_total : Math.round(pi * rad / total_l * seats);
+          const rowSeats = index === rowsRadius.length - 1 ? SEATS - dots_total : Math.round(PI * rad / total_l * SEATS);
           dots_total += rowSeats;
 
           return (
             <Row
               key={index}
               seats={rowSeats}
-              pi={pi}
+              pi={PI}
               rad={rad}
               rowIndex={index}
               radius={{r0: radius0, r1: radius1}}
-              dot_l={total_l / seats}
-              totalRows={rows}
-              deputies={deputies}
+              dot_l={total_l / SEATS}
+              totalRows={ROWS}
+              deputies={mutableDeputies}
             ></Row>
           )})}
       </g>
@@ -49,61 +52,108 @@ export default function Hemicycle({width, deputies}: HemicycleProps) {
   );
 }
 
-const distributeDeputySeats = (row: number, seats: number, remainingDeputies: Deputy[]) => {
-  return null;
-}
+// const rowDeputies = (currentRow: number, seats: number, remainingDeputies: Deputy[], parties: PartyAcronym[]) => {
+//   if (currentRow === 0) {
+//    return distributeParliamentaryGroupLeaders(seats, remainingDeputies);
+//   }
+//   // return distributeParliamentaryDeputies(seats, remainingDeputies, parties);
+// }
 
-const rowDeputies = (currentRow: number, seats: number, remainingDeputies: Deputy[]) => {
-  if (currentRow === 0) {
-    const leaders = remainingDeputies.filter(deputy => deputy.position.description === 'lider_parlamentar');
+// const distributeParliamentaryGroupLeaders = (seats: number, remainingDeputies: Deputy[]) => {
+//   let remainingSeats = seats;
+//   const deputies: Deputy[] = [];
+
+//   const leaders = remainingDeputies.filter(deputy => deputy.position.description === 'lider_parlamentar');
+  
+//   if (leaders.length > seats / 2) { // bigger than the half of the row (left | right)
+//     throw Error('Too many deputy leaders.');
+//   }
+//   deputies.concat(leaders);
+//   remainingSeats -= leaders.length;
+
+//   const nonLeaders = remainingDeputies.filter(deputy => deputy.position.description !== 'lider_parlamentar');
+  
+//   for (const index in nonLeaders) {
+//     if (remainingSeats === 0) {
+//       break;
+//     }
+
+//     // const currentParty = parties[index];
+//     // const currentPartyDeputy = randomDeputy(nonLeaders, currentParty as PartyAcronym);
+
+//     if (!currentPartyDeputy) {
+//       continue;
+//     }
+//     deputies.push(nonLeaders[index]);
+//     remainingSeats--;
+//   };
+//   return deputies;
+// }
+
+// const distributeParliamentaryDeputies = (seats: number, remainingDeputies: Deputy[], parties: PartyAcronym[], rows: number): Deputy[] => {
+//   let remainingSeats = seats;
+//   const rowDeputies: Deputy[] = [];
+
+//   if (remainingDeputies.length > remainingSeats) {
+//     throw Error(`Too many deputies - ${remainingDeputies.length} to the remaining seats - ${remainingSeats}.`);
+//   }
+
+// remainingRowSeats = 0;
+// if, is not the last party ?
+// how many parties left ?
+// if, each party's total seats > 1 ?
+// remainingRowSeats = SEAT_DISTRIBUTION * remaining parties;
+// if, party's total seats more than all rows ?
+// how many parties ?
+// how many repetitions ?
+// remainingRowSeats += repetitions
+// partieSeats >= remainingRowSeats => jump to next row
+//   for (const party of parties) {
+//     if (remainingSeats === 0) {
+//       break;
+//     }
     
-    remainingDeputies.forEach((deputy, index) => {
-      if (deputy.position.description === 'lider_parlamentar') {
-        remainingDeputies.splice(index, 1);
-      }
-    });
+//     const partyDeputies = remainingDeputies.filter(deputy => deputy.parliamentaryGroup.acronym === party);
+//     const deputies = selectRowDeputies(partyDeputies, remainingDeputies, remainingSeats);
 
-    if (leaders.length > seats || leaders.length > seats / 2) { // bigger than all seats or bigger than the half of the row (left | right)
-      throw Error('Too many deputy leaders.');
-    }
-    let remainingSeats = seats - leaders.length;
+    
+//     if (deputies.length === 1) {
+//       const deputyIndex = remainingDeputies.indexOf(deputies[0]);
+//       remainingDeputies.splice(deputyIndex, 1);
+//     }
+    
+//     remainingSeats -= deputies.length;
+//     rowDeputies.concat(deputies);
+//   }
+//   return rowDeputies;
+// }
 
-    const parties = ['BE', 'PCP'];
+const selectRowDeputies = (partyDeputies: Deputy[], remainingDeputies: Deputy[], remainingSeats: number): Deputy[] => {
+  const totalPartyDeputies = partyDeputies.length;
 
-    for (const party of parties) {
-      if (remainingSeats === 0) {
-        break;
-      }
-      const partyDeputy = randomDeputy(remainingDeputies, party as PartyAcronym);
-      
-      if (!partyDeputy) {
-        continue;
-      }
-      leaders.push(partyDeputy);
-      const remain = remainingDeputies.slice(remainingDeputies.indexOf(partyDeputy), 1);
-      remainingSeats--;
-    }
-    return remainingDeputies.filter(deputy => deputy.position.description !== 'lider')
+  if (totalPartyDeputies === 0) {
+    return [];
   }
-}
-
-const randomDeputy =(deputies: Deputy[], party: PartyAcronym): Deputy | null => {
-  const partyDeputies = deputies.filter(deputy => deputy.parliamentaryGroup.acronym === party);
-  const size = partyDeputies.length;
-  
-  if (size === 0) {
-    return null;
+  else if (totalPartyDeputies === 1 && remainingSeats >= totalPartyDeputies) {
+    return partyDeputies;
   }
-  
-  return deputies
-    .filter(deputy => deputy.parliamentaryGroup.acronym === party)
-    .sort(() => randomIndex(size))
-    [randomIndex(size)];
-}
+  else if (totalPartyDeputies === 2 && remainingSeats >= totalPartyDeputies) {
+    const deputy1 = randomDeputy(partyDeputies);
+    const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
 
-const randomIndex = (max: number) => {
-  if (max <= 0) {
-    throw Error(`${max} is an invalid input. It must be >= 1.`)
+    return [deputy1, deputy2];
   }
-  return Math.floor(Math.random() * max)
+  else if (totalPartyDeputies > 2 && remainingSeats >= totalPartyDeputies) {
+    let seats = remainingSeats;
+
+    const deputy1 = randomDeputy(partyDeputies);
+    const deputy2 = randomDeputy(partyDeputies.filter(deputy => JSON.stringify(deputy) !== JSON.stringify(deputy1)));
+
+    seats -= 2;
+
+    // const passRows = ()
+  }
+  else {
+    throw new Error();
+  }
 }

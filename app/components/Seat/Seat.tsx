@@ -2,7 +2,7 @@
 
 import { Popover } from "antd";
 import Link from "next/link";
-import Circle from "./Circle";
+import Circle from "../Circle/Circle";
 import { Deputy } from "../../deputado/dto";
 
 interface SeatProps{
