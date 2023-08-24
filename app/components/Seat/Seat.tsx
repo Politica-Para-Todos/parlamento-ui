@@ -18,7 +18,7 @@ interface SeatProps{
   deputy: Deputy
 }
 
-export default function Seat(props: SeatProps) {
+export default function HemicycleSeat(props: SeatProps) {
   const { deputy } = props;
   const deputyFirstLastName = deputy ? deputy.firstLastName : 'no-deputy';
 

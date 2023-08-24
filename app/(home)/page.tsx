@@ -5,15 +5,9 @@ import { Deputy } from "../deputado/dto";
 import { PartyAcronym, PartyColor } from "../partido/dto";
 
 export default function Home() {
-  // ps = 116
-  // psd = 83
-  // ch = 11
-  // il = 8
-  // be = 6
-  // pcp = 4
-  // pan = 1
-  // l = 1
   const deputies = Array.from<Deputy>(Array());
+  
+  // Temporary deputies builder to populate hemicycle with all XV legislature parties 
   for (let i = 0; i < 116; i++) {
     deputies.push({
       id: 123,

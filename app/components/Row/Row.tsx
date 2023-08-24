@@ -1,6 +1,6 @@
 'use client';
 import { Deputy } from "../../deputado/dto";
-import Seat from "../Seat/Seat"
+import HemicycleSeat from "../Seat/Seat"
 
 interface RowProps{
   seats: number,
@@ -15,13 +15,13 @@ interface RowProps{
   deputies: Deputy[]
 }
 
-export default function Row({seats, rowIndex, radius, hemicycleRows, rad, dot_l, deputies}: RowProps) {
+export default function HemicycleRow({seats, rowIndex, radius, hemicycleRows, rad, dot_l, deputies}: RowProps) {
   const seatsRange = range(0, 1.000001, 1 / seats);
   
   return (
     <g className='row'>
       {seatsRange.map((seatRange, index) => (
-        <Seat
+        <HemicycleSeat
           key={seatRange}
           id={`${rowIndex}-${index}`}
           range={seatRange}
@@ -30,7 +30,7 @@ export default function Row({seats, rowIndex, radius, hemicycleRows, rad, dot_l,
           rad={rad}
           dot_l={dot_l}
           deputy={deputies[index]}
-        ></Seat>
+        ></HemicycleSeat>
       ))}
     </g>
   )
